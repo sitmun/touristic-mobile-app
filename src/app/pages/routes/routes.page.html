@@ -35,10 +35,21 @@
               <div class="col-7">
                 <div class="card-body">
                   <h5 class="card-title">{{elem['name']}}</h5>
-                  <p *ngIf="elem['description']" class="card-text" [innerHTML]="elem['description'].substring(0, 50) + '...'"></p>
+                  <div *ngIf="elem['length'] || elem['difficulty']" class="card-text d-flex">
+                      <div [ngSwitch]="getDifficultyValue(elem['difficulty'])">
+                        <span class="fw-bold text-white p-2 rounded bg-dark" *ngSwitchCase="'-1'">{{ 'routes.unclassified' | translate }} </span>
+                        <span class="fw-bold text-white p-2 rounded bg-medium" *ngSwitchCase="'0'">{{ 'routes.notsuitable' | translate }} </span>
+                        <span class="fw-bold text-white p-2 rounded bg-success" *ngSwitchCase="'1'">{{ 'routes.easy' | translate }} </span>
+                        <span class="fw-bold text-white p-2 rounded bg-warning" *ngSwitchCase="'2'">{{ 'routes.medium' | translate }} </span>
+                        <span class="fw-bold text-white p-2 rounded bg-danger" *ngSwitchCase="'3'">{{ 'routes.hard' | translate }} </span>
+                      </div>
+                      <div>
+                        <span *ngIf="elem['length']" class="fw-bold text-dark ms-3">{{elem['length']}} km</span>
+                      </div>
+                  </div>
                 </div>                
               </div>
-              <div class="col-2 my-auto" *ngIf="elem['geom']">
+              <div class="col-2 my-auto">
                 <ion-button shape="round" class="favorite-btn dl-btn" [ngClass]="{'active' : elem['isFav']}" (click)="toggleFavorite($event, elem)">
                   <ion-icon slot="icon-only" name="heart"></ion-icon>
                 </ion-button>
@@ -47,16 +58,35 @@
                 </ion-button>
               </div>
             </div>
-            <div class="row" *ngIf="elem['description'] || elem['leftbtn'] || elem['rightbtn'] || taskNode.children">
+            <div class="row" *ngIf="elem['description'] || elem['leftbtn'] || elem['rightbtn']">
               <ion-accordion-group>
                 <ion-accordion value="first">
                   <ion-item slot="header" class="mx-auto">
                     <ion-label class="extraInfo-label">{{'moreInfo' | translate}}</ion-label>
                     <ion-icon name="chevron-down" slot="end" class="ion-accordion-toggle-icon"></ion-icon>
                   </ion-item>
-                  <div class="extraInfo-content ion-padding container" slot="content">                    
-                    <div class="row extraInfo-data mb-5" *ngIf="elem['description']">
+                  <div class="extraInfo-content ion-padding container" slot="content">
+                    <div class="extraInfo-data mb-3 align-items-center justify-content-center" *ngIf="elem['time'] || elem['start'] || elem['end'] || elem['circ']"> 
+                        <div *ngIf="elem['time']">
+                          <ion-icon name="time-outline"></ion-icon>
+                          {{ elem['time'] }} min
+                        </div>
+                        <div *ngIf="elem['circ'] == 'SI'">
+                          <ion-icon name="refresh-outline"></ion-icon>
+                          {{ 'routes.circular' | translate }} 
+                        </div>  
+                        <div *ngIf="elem['start']">
+                          <span class="fw-bold me-1">{{ 'routes.start' | translate }}:</span>{{ elem['start'] }}
+                        </div> 
+                        <div *ngIf="elem['end']">
+                          <span class="fw-bold me-1">{{ 'routes.end' | translate }}:</span>{{ elem['end'] }}
+                        </div>                         
+                    </div>
+                    <div class="row extraInfo-data longText mb-5" *ngIf="elem['description']">
                       <div [innerHTML]="elem['description']"></div>
+                    </div>
+                    <div (click)="openModalImg($event, elem['graphic'])" *ngIf="elem['graphic']">
+                        <img class="route-img" src="{{elem['graphic']}}"/>
                     </div>
                     <div class="row justify-content-evenly" *ngIf="elem['leftbtn'] || elem['rightbtn'] || taskNode.children">
                       <div class="col-6">

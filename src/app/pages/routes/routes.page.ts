@@ -7,11 +7,11 @@ import { DatabaseService } from 'src/app/services/database.service';
 import { LoadingController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-detailedlist',
-  templateUrl: './detailedlist.page.html',
-  styleUrls: ['./detailedlist.page.scss'],
+  selector: 'app-routes',
+  templateUrl: './routes.page.html',
+  styleUrls: ['./routes.page.scss'],
 })
-export class DetailedlistPage implements OnInit {
+export class RoutesPage implements OnInit {
 
   selectedLanguage: string | null = null;
   languageOptions: any[] = [];
@@ -26,15 +26,12 @@ export class DetailedlistPage implements OnInit {
   imageModal: String = '';
   loaded = false;
   arraySkeleton: any[] = new Array(3);
-  
-  constructor(private authorizationService: AuthorizationService, private routingService: RoutingService,
-    private languageService: LanguageService, private requestService: RequestService,
-    private databaseService: DatabaseService, private loadingCtrl: LoadingController) {
-  }
 
-  ngOnInit(): void {
-    //this.getParams();
-    //this.getData();
+  constructor(private authorizationService: AuthorizationService, private routingService: RoutingService,
+    private languageService: LanguageService, private requestService: RequestService, private databaseService: DatabaseService,
+    private loadingCtrl: LoadingController) { }
+
+  ngOnInit() {
   }
 
   ionViewWillEnter() {
@@ -173,6 +170,24 @@ export class DetailedlistPage implements OnInit {
     );
   }
 
+  getDifficultyValue(difficulty: string): string {
+    switch (difficulty) {
+      case 'No apte':
+        return '0';
+      case 'Baixa':
+      case 'Fàcil':
+        return '1';
+      case 'Mitjana':
+      case 'Mitjà':
+        return '2';
+      case 'Alta':
+      case 'Difícil':
+        return '3';
+      default:
+        return '-1';
+    }
+  }
+
   openExtraInfo(elem: any, key: string, keyLabel: string) {
     if (this.taskNode.children) {
       this.nextPage(this.taskNode.id, elem);
@@ -204,5 +219,6 @@ export class DetailedlistPage implements OnInit {
   openLink(link: string) {
     window.open(link, '_system');
   }
+
 
 }
