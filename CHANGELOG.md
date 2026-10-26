@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- **Android**: Capacitor 8 targets API 36. HTTP calls use `CapacitorHttp`. SQLite uses `sqlcipher-android` 4.17.0 so native libraries align to 16 KB.
+
 ### Fixed
 
 - **Near me / GPS**: Location reads call `Geolocation.requestPermissions`. Denied access opens Android Location settings (not only application details) so GPS can be enabled. `cap sync` registers the Geolocation plugin ([#5](https://github.com/sitmun/touristic-mobile-app/issues/5)).
