@@ -2,5 +2,5 @@
 
 # SITMUN Touristic Mobile Application
 
-Description.
+Android touristic application, common to the territories that use SITMUN, version 1.2.x.
 
